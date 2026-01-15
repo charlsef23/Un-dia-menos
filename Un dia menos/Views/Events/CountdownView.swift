@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 enum CountdownUnit: CaseIterable {
     case seconds, minutes, hours, days, weeks, years
@@ -77,7 +78,7 @@ struct CountdownView: View {
         return String(format: "%.2f", v)
     }
 
-    // Progreso visual (simple): desde “ahora” hasta el target, asumiendo ventana 30 días por estética
+    // Progreso visual (simple): ventana estética de 30 días
     private func progress(now: Date, target: Date) -> Double {
         let window: TimeInterval = 86400 * 30
         let remaining = max(0, target.timeIntervalSince(now))

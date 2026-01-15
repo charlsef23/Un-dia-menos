@@ -4,6 +4,11 @@ import Supabase
 enum SupabaseManager {
     static let client = SupabaseClient(
         supabaseURL: Secrets.supabaseURL,
-        supabaseKey: Secrets.supabaseAnonKey
+        supabaseKey: Secrets.supabaseAnonKey,
+        options: .init(
+            auth: .init(
+                emitLocalSessionAsInitialSession: true
+            )
+        )
     )
 }

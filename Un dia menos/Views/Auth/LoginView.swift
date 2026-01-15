@@ -14,10 +14,21 @@ struct LoginView: View {
                 GlassCard {
                     VStack(spacing: 14) {
                         BrandField(title: "Email", text: $email)
+                            .textInputAutocapitalization(.never)
+                            .keyboardType(.emailAddress)
+
                         BrandField(title: "Contraseña", text: $password, isSecure: true)
 
-                        PrimaryButton(title: auth.isLoading ? "Entrando..." : "Entrar", systemImage: "arrow.right") {
-                            Task { await auth.signIn(email: email, password: password) }
+                        PrimaryButton(
+                            title: auth.isLoading ? "Entrando..." : "Entrar",
+                            systemImage: "arrow.right"
+                        ) {
+                            print("👉 Tap login button. email=\(email)")
+                            Task {
+                                await auth.signIn(email: email.trimmingCharacters(in: .whitespacesAndNewlines),
+                                                  password: password)
+                                print("✅ login finished. userId=\(String(describing: auth.sessionUserId)) error=\(String(describing: auth.errorMessage))")
+                            }
                         }
                         .disabled(auth.isLoading || email.isEmpty || password.isEmpty)
 

@@ -14,10 +14,21 @@ struct RegisterView: View {
                 GlassCard {
                     VStack(spacing: 14) {
                         BrandField(title: "Email", text: $email)
+                            .textInputAutocapitalization(.never)
+                            .keyboardType(.emailAddress)
+
                         BrandField(title: "Contraseña", text: $password, isSecure: true)
 
-                        PrimaryButton(title: auth.isLoading ? "Creando..." : "Crear", systemImage: "person.badge.plus") {
-                            Task { await auth.signUp(email: email, password: password) }
+                        PrimaryButton(
+                            title: auth.isLoading ? "Creando..." : "Crear",
+                            systemImage: "person.badge.plus"
+                        ) {
+                            print("👉 Tap register button. email=\(email)")
+                            Task {
+                                await auth.signUp(email: email.trimmingCharacters(in: .whitespacesAndNewlines),
+                                                  password: password)
+                                print("✅ register finished. userId=\(String(describing: auth.sessionUserId)) error=\(String(describing: auth.errorMessage))")
+                            }
                         }
                         .disabled(auth.isLoading || email.isEmpty || password.isEmpty)
 

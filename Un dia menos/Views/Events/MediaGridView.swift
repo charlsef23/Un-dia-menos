@@ -66,8 +66,6 @@ struct MediaGridView: View {
         defer { isLoading = false }
 
         do {
-            let supported = [UTType.image, UTType.movie]
-
             // Detect kind
             let kind: String
             if item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
